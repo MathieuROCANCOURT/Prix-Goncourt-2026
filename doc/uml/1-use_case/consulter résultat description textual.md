@@ -1,3 +1,5 @@
+# Description textuelle pour consulter les résultats
+
 | Elément                  | Description                                                                                                                                                  |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Nom du cas d’utilisation | Consulter les livres                                                                                                                                         |
