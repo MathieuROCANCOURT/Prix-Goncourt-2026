@@ -2,7 +2,7 @@
 
 | Elément                  | Description                                                                                                                                                  |
 |--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Nom du cas d’utilisation | Consulter les livres                                                                                                                                         |
+| Nom du cas d’utilisation | Consulter les résultats                                                                                                                                      |
 | But / Objectif           | Tout le monde peut consulter le résultat de chaque tour où il y a que le dernier tour qu'on affiche le nombre de vote.                                       |
 | Acteur principal         | Invité                                                                                                                                                       |
 | Préconditions            | <ul><li>Les livres existent</li><li>Au moins un tour a été terminé et validé par le directeur du jury.</ul>                                                  |
