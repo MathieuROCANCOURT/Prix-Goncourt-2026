@@ -148,7 +148,17 @@ INSERT INTO person(pe_id_person, pe_first_name, pe_last_name) VALUES
 (13, "Olivier", "Grondeau"),
 (14, "Emma", "Marsantes"),
 (15, "Patrice", "Trigano"),
-(16, "Thélyson", "Orélien")
+(16, "Thélyson", "Orélien"),
+(17, "Didier", "Decoin"),
+(18, "Françoise", "Chandernagor"),
+(19, "Tahar", "Ben Jelloun"),
+(20, "Pierre", "Assouline"),
+(21, "Philippe", "Claudel"),
+(22, "Paule", "Constant"),
+(23, "Éric-Emmanuel", "Schmitt"),
+(24, "Camille", "Laurens"),
+(25, "Pascal", "Bruckner"),
+(26, "Christine", "Angot")
 ;
 
 
@@ -212,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `jury` (
   `ju_id_jury` int NOT NULL AUTO_INCREMENT,
   `ju_is_chairman` BOOLEAN NOT NULL DEFAULT FALSE,
   `ju_id_person` int NOT NULL,
-  `ju_id_book` int,
+  `ju_id_book` int DEFAULT NULL,
   PRIMARY KEY (`ju_id_jury`),
   UNIQUE KEY `ju_id_person` (`ju_id_person`),
   KEY `ju_id_book` (`ju_id_book`)
@@ -222,6 +232,17 @@ CREATE TABLE IF NOT EXISTS `jury` (
 -- Déchargement des données de la table `jury`
 --
 
+INSERT INTO jury(ju_is_chairman, ju_id_person) VALUES
+(TRUE, 17),
+(DEFAULT, 18),
+(DEFAULT, 19),
+(DEFAULT, 20),
+(DEFAULT, 21),
+(DEFAULT, 22),
+(DEFAULT, 23),
+(DEFAULT, 24),
+(DEFAULT, 25),
+(DEFAULT, 26);
 
 --
 -- Contraintes pour les tables déchargées
