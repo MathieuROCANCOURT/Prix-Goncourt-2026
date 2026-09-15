@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
 """
-Classe Book
+Classe ListJury
 """
 
 from __future__ import annotations
 
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 from dataclasses import dataclass, field
-from datetime import date
 
 # pour éviter une circularité des imports à l'exécution,
 # les classes Jury, JuryChair et Book important la classe ListJury
