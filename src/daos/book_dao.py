@@ -6,7 +6,7 @@ Classe Dao[Book]
 from models.book import Book
 from daos.dao import Dao
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 from models.author import Author
 from models.jury import Jury
@@ -31,6 +31,27 @@ class BookDao(Dao[Book]):
 
         with Dao.connection.cursor():
             return None
+
+    def read_all(self) -> list[Book]:
+        list_book: list[Book] = []
+
+        with Dao.connection.cursor() as cursor:
+            sql = """
+                SELECT GROUP_CONCAT(bo_id_book SEPARATOR ',') AS id_books FROM book;
+                """
+            cursor.execute(sql)
+            record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
+
+            if record is None:
+                return list_book
+
+            if isinstance(record, dict):
+                for id_book in record["id_books"].split(','):
+                    book: Book | None = self.read(id_book)
+                    if book is not None:
+                        list_book.append(book)
+
+            return list_book
 
     def update(self, book: Book) -> bool:
         """Met à jour en BD l'entité Book correspondant à book, pour y correspondre
