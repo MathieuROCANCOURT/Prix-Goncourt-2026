@@ -3,12 +3,15 @@
 """
 Classe Dao[Book]
 """
+from daos.author_dao import AuthorDao
+from daos.editor_dao import EditorDao
 from models.book import Book
 from daos.dao import Dao
 from dataclasses import dataclass
 from typing import Optional, Any
 
 from models.author import Author
+from models.editor import Editor
 from models.jury import Jury
 
 
@@ -24,6 +27,27 @@ class BookDao(Dao[Book]):
         with Dao.connection.cursor() as cursor:
             return cursor.lastrowid
 
+    @staticmethod
+    def book_from_db(record: dict[str, Any]) -> Book | None:
+        author: Author | None = AuthorDao().read(record["bo_id_editor"])
+        editor: Editor | None = EditorDao().read(record["bo_id_editor"])
+
+        if author is not None and editor is not None:
+            book: Book = Book(record["bo_title"],
+                              record["bo_isbn"],
+                              record["bo_resume"],
+                              record["bo_publication_date"],
+                              record["bo_nb_pages"],
+                              record["bo_editor_price"],
+                              author,
+                              editor,
+                              record["bo_selected_to"]
+                              )
+            book.id = record["bo_id_book"]
+            return book
+
+        return None
+
     def read(self, id_book: int) -> Optional[Book]:
         """Renvoit le livre correspondant à l'entité dont l'id est id_book
            (ou None s'il n'a pu être trouvé)"""
@@ -37,17 +61,17 @@ class BookDao(Dao[Book]):
 
         with Dao.connection.cursor() as cursor:
             sql = """
-                SELECT GROUP_CONCAT(bo_id_book SEPARATOR ',') AS id_books FROM book;
+                SELECT * FROM book;
                 """
             cursor.execute(sql)
-            record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
+            records: tuple[dict[str, Any]] | tuple[tuple[Any], ...] | None = cursor.fetchall()
 
-            if record is None:
+            if records is None:
                 return list_book
 
-            if isinstance(record, dict):
-                for id_book in record["id_books"].split(','):
-                    book: Book | None = self.read(id_book)
+            for record in records:
+                if isinstance(record, dict):
+                    book = self.book_from_db(record)
                     if book is not None:
                         list_book.append(book)
 
