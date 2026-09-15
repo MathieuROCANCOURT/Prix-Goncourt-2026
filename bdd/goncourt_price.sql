@@ -34,7 +34,7 @@ DROP TABLE IF EXISTS `editor`;
 
 CREATE TABLE IF NOT EXISTS `editor` (
   `ed_id_editor` int NOT NULL AUTO_INCREMENT,
-  `ed_name` varchar(50) NOT NULL,
+  `ed_name` varchar(20) NOT NULL,
   PRIMARY KEY (`ed_id_editor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
