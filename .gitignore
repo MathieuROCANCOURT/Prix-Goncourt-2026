@@ -1,6 +1,8 @@
 *.dia~
 *.dia.autosave
 
+*.lo1
+
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,git,python,pycharm
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,visualstudiocode,git,python,pycharm
 
