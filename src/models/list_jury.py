@@ -42,20 +42,21 @@ class ListJury:
             print(f"[{book.get_id}]: {book}")
 
     def run_votes(self):
-        for jury in self.list_jury:
-            print(f"Bonjour {jury.first_name} {jury.last_name}.\n"
-                  f"Voici la liste des courses en liste")
-            self.display_all_books()
+        while len(self.list_book_selected) != 1:
+            for jury in self.list_jury:
+                print(f"Bonjour {jury.first_name} {jury.last_name}.\n"
+                      f"Voici la liste des courses en liste")
+                self.display_all_books()
 
-            jury.vote(self.list_book_selected)
+                jury.vote(self.list_book_selected)
 
-        jury_chairman: JuryChair | None = self.jury_chair()
+            jury_chairman: JuryChair | None = self.jury_chair()
 
-        list_id_book_next_turn = []
-        if jury_chairman is not None:
-            list_id_book_next_turn = jury_chairman.end_vote()
+            list_id_book_next_turn = []
+            if jury_chairman is not None:
+                list_id_book_next_turn = jury_chairman.end_vote()
 
-        self.end_turn(list_id_book_next_turn)
+            self.end_turn(list_id_book_next_turn)
 
     def end_turn(self, list_id_book: list[int]):
         self.list_book_selected = []
