@@ -17,24 +17,29 @@ class JuryChair(Jury):
         return 2
 
     @staticmethod
-    def end_vote():
+    def end_vote(self):
         list_id_book = []
         list_id_book_next_turn = []
         result = jury_dao.JuryDao().count_vote()
         print("Voici les résultats du vote:")
 
-        for row in result:
-            id_book = row["bo_id_book"]
-            list_id_book.append(id_book)
-            print(f"[{id_book}] {book_dao.BookDao().read(id_book)}: {row["count_vote"]} voix.")
+        list_id_book = self.display_result(result, list_id_book)
 
-        for _ in range(len(result) // 2):
-            id_book_selected = input("Saisir les id du livre qui passe au prochain tour.")
+        if len(result) > 4:
+            for _ in range(len(result) // 2):
+                list_id_book_next_turn.append(self.check_input_id(list_id_book))
+        else:
+            max_nb_vote = result[0]["count_vote"]
 
-            while not id_book_selected.isdigit() or int(id_book_selected) not in list_id_book:
-                id_book_selected = input("Saisie Incorrect\nSaisir les id du livre qui passe au prochain tour.")
-
-            list_id_book_next_turn.append(int(id_book_selected))
+            if max_nb_vote == result[-1]["count_vote"]:
+                input("Est-ce que le président du jury veut utiliser son double voix ?[Y/n]")
+                list_id_book_next_turn.append(self.voted_id_book)
+            else:
+                for id_book, nb_vote in result:
+                    if max_nb_vote == nb_vote:
+                        list_id_book_next_turn.append(id_book)
+                    else:
+                        break
 
         return list_id_book_next_turn
 
