@@ -12,6 +12,7 @@ from .person import Person
 
 @dataclass
 class Author(Person):
+    id: Optional[int] = field(default=None, init=False)
     biography: Optional[str] = field(init=False)
 
     def __str__(self) -> str:
