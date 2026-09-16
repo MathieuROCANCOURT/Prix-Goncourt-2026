@@ -6,22 +6,28 @@ Classe School
 
 from dataclasses import dataclass, field
 
-from daos import book_dao
+from daos import book_dao, jury_dao
 from models.book import Book
+from models.jury import Jury
+from models.jury_chair import JuryChair
 
 
 @dataclass
 class Goncourt:
-    books: list[Book] = field(default_factory=list, init=True)
+    list_book: list[Book] = field(default_factory=list, init=True)
+    list_jury: list[Jury] = field(default_factory=list, init=True)
 
     def read_all_book_from_dao(self):
-        self.books = book_dao.BookDao().read_all()
+        self.list_book = book_dao.BookDao().read_all()
+
+    def read_all_jury_from_dao(self):
+        self.list_jury = jury_dao.JuryDao().read_all()
 
     def display_book_list(self) -> None:
         """Affichage de la liste des livres avec pour chacun d'eux :
         - leur auteur
         - l'éditeur"""
-        for book in self.books:
+        for book in self.list_book:
             print(book)
 
     def init_static(self) -> None:
