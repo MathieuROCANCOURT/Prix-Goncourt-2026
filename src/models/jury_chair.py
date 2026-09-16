@@ -16,7 +16,6 @@ class JuryChair(Jury):
     def vote_counts_twice(is_draw: bool) -> int:
         return 2
 
-    @staticmethod
     def end_vote(self):
         list_id_book = []
         list_id_book_next_turn = []
