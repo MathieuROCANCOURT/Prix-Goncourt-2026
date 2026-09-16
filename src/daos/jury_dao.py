@@ -36,8 +36,18 @@ class JuryDao(Dao[Jury]):
            (ou None s'il n'a pu être trouvé)"""
         jury: Optional[Jury]
 
-        with Dao.connection.cursor():
-            return None
+        with Dao.connection.cursor() as cursor:
+            sql = """
+                SELECT * FROM jury
+                WHERE id_jury = %s;
+                """
+            cursor.execute(sql, (id_jury,))
+            record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
+
+            if isinstance(record, dict):
+                book = self.jury_from_db(record)
+
+            return book
 
     def read_all(self) -> list[Jury]:
         list_jury: list[Jury] = []
