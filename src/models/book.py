@@ -31,6 +31,10 @@ class Book:
     list_main_people: list[str] = field(default_factory=list, init=False)
     selected_to_nb_turn: int = 1
 
+    @property
+    def get_id(self):
+        return self.__id
+
     def __str__(self) -> str:
         course_str = (f"Le titre est {self.title} écrit par {self.author.__str__()} publier le {self.publish_date}.\n"
                       f"{self.editor.__str__()}")
