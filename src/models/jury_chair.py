@@ -46,3 +46,12 @@ class JuryChair(Jury):
             print(f"[{id_book}] {book_dao.BookDao().read(id_book)}: {row["count_vote"]} voix.")
 
         return list_id_book
+
+    @staticmethod
+    def check_input_id(list_id_book) -> int:
+        id_book_selected = input("Saisir les id du livre qui passe au prochain tour.")
+
+        while not id_book_selected.isdigit() or int(id_book_selected) not in list_id_book:
+            id_book_selected = input("Saisie Incorrect\nSaisir les id du livre qui passe au prochain tour.")
+
+        return int(id_book_selected)
