@@ -41,7 +41,7 @@ class BookDao(Dao[Book]):
                               record["bo_editor_price"],
                               author,
                               editor,
-                              record["bo_selected_to"]
+                              record["bo_selected_to_turn"]
                               )
             book.id = record["bo_id_book"]
             return book
