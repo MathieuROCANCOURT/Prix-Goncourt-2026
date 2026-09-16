@@ -113,6 +113,36 @@ class JuryDao(Dao[Jury]):
 
         return True
 
+    @staticmethod
+    def update_vote(jury: Jury) -> bool:
+        """Met à jour en BD l'entité Jury correspondant à jury, pour y correspondre
+
+        :param jury: jury déjà mis à jour en mémoire
+        :return: True si la mise à jour a pu être réalisée
+        """
+        try:
+            with Dao.connection.cursor() as cursor:
+                if isinstance(jury, JuryChair):
+                    sql = """
+                            UPDATE jury
+                            SET ju_id_book=%s
+                            WHERE ju_id_jury = %s;
+                        """
+                else:
+                    sql = """
+                            UPDATE jury, person
+                            SET ju_id_book=%s
+                            WHERE ju_id_jury = %s;
+                        """
+                cursor.execute(sql, (jury.voted_id_book, jury.id))
+
+                return cursor.rowcount > 0
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return True
+
 
     def delete(self, jury: Jury) -> bool:
         """Supprime en BD l'entité Jury correspondant à jury

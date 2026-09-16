@@ -42,4 +42,4 @@ class Jury(Person):
             if response_confirm == "" or response_confirm.lower() == 'y':
                 self.voted_id_book = int(id_book_vote)
                 vote_confirm = True
-                jury_dao.JuryDao().update(self)
+                jury_dao.JuryDao().update_vote(self)
