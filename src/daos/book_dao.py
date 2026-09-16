@@ -29,7 +29,7 @@ class BookDao(Dao[Book]):
 
     @staticmethod
     def book_from_db(record: dict[str, Any]) -> Book | None:
-        author: Author | None = AuthorDao().read(record["bo_id_editor"])
+        author: Author | None = AuthorDao().read(record["bo_id_author"])
         editor: Editor | None = EditorDao().read(record["bo_id_editor"])
 
         if author is not None and editor is not None:
