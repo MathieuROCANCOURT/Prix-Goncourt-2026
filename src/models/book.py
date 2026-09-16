@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 
 @dataclass
 class Book:
-    id: Optional[int] = field(default=None, init=False)
+    _id: Optional[int] = field(default=None, init=False)
     title: str
     isbn: str
     resume: str
@@ -32,10 +32,10 @@ class Book:
     selected_to_nb_turn: int = 1
 
     @property
-    def get_id(self):
-        return self.id
+    def get_id(self) -> int | None:
+        return self._id
 
     def __str__(self) -> str:
-        course_str = (f"Le titre est {self.title} écrit par {self.author.__str__()} publier le {self.publish_date}.\n"
+        course_str = (f"Le titre est '{self.title}' écrit par {self.author.__str__()}. "
                       f"{self.editor.__str__()}")
         return course_str
