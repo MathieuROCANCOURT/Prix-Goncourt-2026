@@ -6,6 +6,7 @@ Classe School
 
 from dataclasses import dataclass, field
 
+from daos import book_dao
 from models.book import Book
 
 
