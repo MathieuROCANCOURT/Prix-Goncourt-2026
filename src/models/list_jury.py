@@ -29,3 +29,12 @@ class ListJury:
                 return self.list_jury.index(jury)
 
         return -1
+
+    def display_all_books(self) -> None:
+        """Affichage de la liste des livres avec pour chacun d'eux :
+        - l'id
+        - le titre du livre
+        - leur auteur
+        - l'éditeur"""
+        for book in self.list_book_selected:
+            print(f"[{book.get_id}]: {book}")
