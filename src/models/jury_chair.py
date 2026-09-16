@@ -5,11 +5,11 @@ Classe JuryChair
 """
 
 from dataclasses import dataclass, field
-from typing import Optional
 from .jury import Jury
 
 
 @dataclass
 class JuryChair(Jury):
-    def __init__(self):
-        super().__init__()
+    @staticmethod
+    def vote_counts_twice(is_draw: bool) -> int:
+        return 2
