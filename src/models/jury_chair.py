@@ -37,3 +37,12 @@ class JuryChair(Jury):
             list_id_book_next_turn.append(int(id_book_selected))
 
         return list_id_book_next_turn
+
+    @staticmethod
+    def display_result(result, list_id_book):
+        for row in result:
+            id_book = row["bo_id_book"]
+            list_id_book.append(id_book)
+            print(f"[{id_book}] {book_dao.BookDao().read(id_book)}: {row["count_vote"]} voix.")
+
+        return list_id_book
