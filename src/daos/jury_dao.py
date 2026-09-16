@@ -23,6 +23,16 @@ class Jury(Dao[Jury]):
         with Dao.connection.cursor() as cursor:
             return cursor.lastrowid
 
+    @staticmethod
+    def jury_from_db(record: dict[str, Any]) -> Jury | None:
+        jury: Optional[Jury]
+
+        jury = Jury(record["pe_first_name"],
+                    record["pe_last_name"])
+        jury.id = record["jury.ju_id_jury"]
+
+        return jury
+
     def read(self, id_jury: int) -> Optional[Jury]:
         """Renvoit le jury correspondant à l'entité dont l'id est ju_id_jury
            (ou None s'il n'a pu être trouvé)"""
