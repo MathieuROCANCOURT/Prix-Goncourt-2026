@@ -4,7 +4,9 @@
 Classe JuryChair
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
+from daos import jury_dao, book_dao
 from .jury import Jury
 
 
