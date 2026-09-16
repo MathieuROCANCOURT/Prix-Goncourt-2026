@@ -20,6 +20,18 @@ class AuthorDao(Dao[Author]):
         with Dao.connection.cursor() as cursor:
             return cursor.lastrowid > 0
 
+    @staticmethod
+    def read_author_from_db(record: dict[str, Any]) -> Author | None:
+        author: Optional[Author]
+
+        author = Author(record["pe_first_name"],
+                        record["pe_last_name"])
+        author.id = record["au_id_author"]
+        author.biography = record["au_biography"]
+
+        return author
+
+
     def read(self, id_author: int) -> Optional[Author]:
         """Renvoit l'auteur correspondant à l'entité dont l'id est au_id_author
            (ou None s'il n'a pu être trouvé)"""
