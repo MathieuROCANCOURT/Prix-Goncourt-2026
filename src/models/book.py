@@ -33,7 +33,7 @@ class Book:
 
     @property
     def get_id(self):
-        return self.__id
+        return self.id
 
     def __str__(self) -> str:
         course_str = (f"Le titre est {self.title} écrit par {self.author.__str__()} publier le {self.publish_date}.\n"
