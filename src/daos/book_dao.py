@@ -101,7 +101,7 @@ class BookDao(Dao[Book]):
                             bo_title=%s,
                             bo_isbn=%s,
                             bo_resume=%s,
-                            bo_main_people==%s,
+                            bo_main_people=%s,
                             bo_publication_date=%s,
                             bo_nb_pages=%s,
                             bo_editor_price=%s,
