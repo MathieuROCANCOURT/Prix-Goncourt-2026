@@ -51,10 +51,20 @@ class BookDao(Dao[Book]):
     def read(self, id_book: int) -> Optional[Book]:
         """Renvoit le livre correspondant à l'entité dont l'id est id_book
            (ou None s'il n'a pu être trouvé)"""
-        book: Optional[Book]
+        book: Optional[Book] = None
 
-        with Dao.connection.cursor():
-            return None
+        with Dao.connection.cursor() as cursor:
+            sql = """
+                SELECT * FROM book
+                WHERE bo_id_book = %s;
+                """
+            cursor.execute(sql, (id_book, ))
+            record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
+
+            if isinstance(record, dict):
+                book = self.book_from_db(record)
+
+            return book
 
     def read_all(self) -> list[Book]:
         list_book: list[Book] = []
