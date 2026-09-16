@@ -24,12 +24,12 @@ class ListJury:
     list_jury: list[Jury]
     list_book_selected: list[Book] = field(default_factory=list, init=True)
 
-    def index_jury_chair(self) -> int:
+    def jury_chair(self) -> JuryChair | None:
         for jury in self.list_jury:
             if isinstance(jury, JuryChair):
-                return self.list_jury.index(jury)
+                return jury
 
-        return -1
+        return None
 
     def display_all_books(self) -> None:
         """Affichage de la liste des livres avec pour chacun d'eux :
