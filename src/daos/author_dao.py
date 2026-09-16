@@ -6,7 +6,7 @@ Classe Dao[Author]
 from models.author import Author
 from daos.dao import Dao
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 
 @dataclass
@@ -35,10 +35,21 @@ class AuthorDao(Dao[Author]):
     def read(self, id_author: int) -> Optional[Author]:
         """Renvoit l'auteur correspondant à l'entité dont l'id est au_id_author
            (ou None s'il n'a pu être trouvé)"""
-        author: Optional[Author]
+        with Dao.connection.cursor() as cursor:
+            sql = """
+                    SELECT au_id_author, pe_first_name, pe_last_name, au_biography FROM author
+                    JOIN person ON person.pe_id_person = author.au_id_person
+                    WHERE au_id_author = %s;
+                """
 
-        with Dao.connection.cursor():
-            return None
+            cursor.execute(sql, (id_author,))
+            record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
+
+        if isinstance(record, dict):
+            return self.read_author_from_db(record)
+
+        return None
+
 
     def update(self, author: Author) -> bool:
         """Met à jour en BD l'entité Author correspondant à author, pour y correspondre
