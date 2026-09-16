@@ -28,7 +28,7 @@ class Book:
     price: float
     author: Author
     editor: Editor
-    list_main_people: list[str] = field(default_factory=list, init=False)
+    list_main_people: str = field(default_factory=str, init=False)
     selected_to_nb_turn: int = 1
 
     @property
