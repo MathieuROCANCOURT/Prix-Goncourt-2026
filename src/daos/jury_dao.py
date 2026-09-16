@@ -3,17 +3,14 @@
 """
 Classe Dao[Teacher]
 """
-from daos import editor_dao, book_dao
-from models.book import Book
 from models.jury import Jury
-from models.person import Person
 from daos.dao import Dao
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 
 @dataclass
-class Jury(Dao[Jury]):
+class JuryDao(Dao[Jury]):
     def create(self, jury: Jury) -> int:
         """Crée en BD l'entité Jury correspondant à l'adresse jury
 
