@@ -168,6 +168,24 @@ class JuryDao(Dao[Jury]):
 
         return True
 
+    @staticmethod
+    def count_vote():
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                        SELECT bo_id_book, COUNT(ju_id_book) AS count_vote
+                        FROM jury
+                        RIGHT JOIN book ON book.bo_id_book = jury.ju_id_book
+                        GROUP BY bo_id_book
+                        ORDER BY count_vote DESC;
+                    """
+                cursor.execute(sql)
+                return cursor.fetchall()
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return True
 
     def delete(self, jury: Jury) -> bool:
         """Supprime en BD l'entité Jury correspondant à jury
