@@ -20,6 +20,8 @@ Bienvenue dans l'élection du prix Goncourt 2026
     # initialisation d'un ensemble de jury, d'auteurs, d'éditeurs et de livres composant le prix Goncourt.
     goncourt.init_static()
 
+    goncourt.init_app()
+
 
 if __name__ == '__main__':
     main()

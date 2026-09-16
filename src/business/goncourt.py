@@ -10,6 +10,7 @@ from daos import book_dao, jury_dao
 from models.book import Book
 from models.jury import Jury
 from models.jury_chair import JuryChair
+from models.list_jury import ListJury
 
 
 @dataclass
@@ -33,7 +34,6 @@ class Goncourt:
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour le prix Goncourt."""
         self.read_all_book_from_dao()
-        self.display_book_list()
 
         assert len(self.list_book) == 16
         assert self.list_book[0].price == float(format(23.00, ".2f"))
@@ -47,3 +47,9 @@ class Goncourt:
         for jury in self.list_jury[1:]:
             assert not isinstance(jury, JuryChair)
             assert isinstance(jury, Jury)
+
+    def init_app(self) -> None:
+        list_jury = ListJury(self.list_jury, self.list_book)
+        assert list_jury.index_jury_chair() == 0
+
+        list_jury.display_all_books()
