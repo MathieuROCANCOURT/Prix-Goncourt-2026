@@ -68,7 +68,7 @@ class JuryDao(Dao[Jury]):
                     bo_id_book
                 FROM jury
                 JOIN person ON person.pe_id_person = ju_id_person
-                LEFT JOIN vote ON vote.ju_id_jury = jury.ju_id_jury;
+                LEFT JOIN book ON book.bo_id_book = jury.ju_id_book;
                 """
             cursor.execute(sql)
             records: tuple[dict[str, Any]] | tuple[tuple[Any], ...] | None = cursor.fetchall()
