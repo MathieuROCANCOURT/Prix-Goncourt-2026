@@ -21,7 +21,6 @@ USE goncourt_price;
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `vote`;
 DROP TABLE IF EXISTS `book`;
 DROP TABLE IF EXISTS `jury`;
 DROP TABLE IF EXISTS `author`;
@@ -199,20 +198,6 @@ INSERT INTO author(au_id_author, au_biography, au_id_person) VALUES
 (16, "Né en 1988, Thélyson Orélien est un auteur québécois d'origine haïtienne. Poète et critique, il construit une oeuvre habitée par la mémoire, l'exil et la question de l'appartenance. Depuis sa publication au Québec par les Éditions du Boréal, C'était ça ou mourir rencontre un écho international exceptionnel et est en cours de traduction dans plus de vingt langues. Un premier roman phénomène qui révèle une grande voix de la littérature contemporaine.", 16)
 ;
 
-
--- --------------------------------------------------------
-
---
--- Structure de la table `vote`
---
-
-CREATE TABLE IF NOT EXISTS `vote` (
-  `bo_id_book` int NOT NULL,
-  `ju_id_jury` int NOT NULL,
-  PRIMARY KEY (`bo_id_book`,`ju_id_jury`),
-  KEY `bo_id_book` (`bo_id_book`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
 -- --------------------------------------------------------
 
 --
@@ -263,17 +248,11 @@ ALTER TABLE `book`
   ADD CONSTRAINT `bo_ibfk_2` FOREIGN KEY (`bo_id_editor`) REFERENCES `editor` (`ed_id_editor`);
 
 --
--- Contraintes pour la table `vote`
---
-ALTER TABLE `vote`
-  ADD CONSTRAINT `vote_ibfk_1` FOREIGN KEY (`ju_id_jury`) REFERENCES `jury` (`ju_id_jury`),
-  ADD CONSTRAINT `vote_ibfk_2` FOREIGN KEY (`bo_id_book`) REFERENCES `book` (`bo_id_book`);
-
---
 -- Contraintes pour la table `jury`
 --
 ALTER TABLE `jury`
-  ADD CONSTRAINT `jury_ibfk_1` FOREIGN KEY (`ju_id_person`) REFERENCES `person` (`pe_id_person`);
+  ADD CONSTRAINT `jury_ibfk_1` FOREIGN KEY (`ju_id_person`) REFERENCES `person` (`pe_id_person`),
+  ADD CONSTRAINT `jury_ibfk_2` FOREIGN KEY (`ju_id_book`) REFERENCES `book` (`bo_id_book`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
