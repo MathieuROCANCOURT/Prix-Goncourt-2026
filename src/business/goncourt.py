@@ -25,3 +25,9 @@ class Goncourt:
 
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour le prix Goncourt."""
+        self.read_all_book_from_dao()
+        self.display_book_list()
+
+        assert len(self.books) == 16
+        assert self.books[0].price == float(format(23.00, ".2f"))
+        assert self.books[12].author.first_name == "Olivier"
