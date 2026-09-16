@@ -55,3 +55,22 @@ class ListJury:
             self.display_all_books()
 
             jury.vote(self.list_book_selected)
+
+        jury_chairman: JuryChair | None = self.jury_chair()
+
+        list_id_book_next_turn = []
+        if jury_chairman is not None:
+            list_id_book_next_turn = jury_chairman.end_vote()
+
+        self.end_turn(list_id_book_next_turn)
+
+    def end_turn(self, list_id_book: list[int]):
+        self.list_book_selected = []
+
+        for id_book in list_id_book:
+            book: Book | None = book_dao.BookDao().read(id_book)
+            if book is not None:
+                self.list_book_selected.append(book)
+                book.selected_to_nb_turn += 1
+                print(book)
+                book_dao.BookDao().update(book)
