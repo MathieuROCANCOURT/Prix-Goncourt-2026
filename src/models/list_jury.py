@@ -36,5 +36,14 @@ class ListJury:
         - le titre du livre
         - leur auteur
         - l'éditeur"""
+        print("[id]: Livre")
         for book in self.list_book_selected:
             print(f"[{book.get_id}]: {book}")
+
+    def run_votes(self):
+        for jury in self.list_jury:
+            print(f"Bonjour {jury.first_name} {jury.last_name}.\n"
+                  f"Voici la liste des courses en liste")
+            self.display_all_books()
+
+            jury.vote(self.list_book_selected)
