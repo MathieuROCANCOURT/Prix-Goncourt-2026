@@ -40,6 +40,14 @@ class ListJury:
         for book in self.list_book_selected:
             print(f"[{book.get_id}]: {book}")
 
+    @staticmethod
+    def get_all_book_id_selected(list_book):
+        list_id_book = []
+        for book in list_book:
+            list_id_book.append(str(book.get_id))
+
+        return list_id_book
+
     def run_votes(self):
         for jury in self.list_jury:
             print(f"Bonjour {jury.first_name} {jury.last_name}.\n"
