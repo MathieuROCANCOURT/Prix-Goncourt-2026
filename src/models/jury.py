@@ -12,3 +12,4 @@ from .person import Person
 @dataclass
 class Jury(Person):
     id: Optional[int] = field(default=None, init=False)
+    voted_id_book: Optional[int] = field(default=None, init=False)
