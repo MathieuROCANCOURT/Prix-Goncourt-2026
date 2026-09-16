@@ -31,6 +31,35 @@ class Jury(Dao[Jury]):
         with Dao.connection.cursor():
             return None
 
+    def read_all(self) -> list[Jury]:
+        list_jury: list[Jury] = []
+
+        with Dao.connection.cursor() as cursor:
+            sql = """
+                SELECT
+                    jury.ju_id_jury,
+                    ju_is_chairman,
+                    pe_first_name,
+                    pe_last_name,
+                    bo_id_book
+                FROM jury
+                JOIN person ON person.pe_id_person = ju_id_person
+                LEFT JOIN vote ON vote.ju_id_jury = jury.ju_id_jury;
+                """
+            cursor.execute(sql)
+            records: tuple[dict[str, Any]] | tuple[tuple[Any], ...] | None = cursor.fetchall()
+
+            if records is None:
+                return list_jury
+
+            for record in records:
+                if isinstance(record, dict):
+                    jury: Jury | None = self.jury_from_db(record)
+                    if jury is not None:
+                        list_jury.append(jury)
+
+            return list_jury
+
     def update(self, jury: Jury) -> bool:
         """Met à jour en BD l'entité Jury correspondant à jury, pour y correspondre
 
