@@ -35,6 +35,15 @@ class Goncourt:
         self.read_all_book_from_dao()
         self.display_book_list()
 
-        assert len(self.books) == 16
-        assert self.books[0].price == float(format(23.00, ".2f"))
-        assert self.books[12].author.first_name == "Olivier"
+        assert len(self.list_book) == 16
+        assert self.list_book[0].price == float(format(23.00, ".2f"))
+        assert self.list_book[12].author.first_name == "Olivier"
+
+        self.read_all_jury_from_dao()
+
+        assert len(self.list_jury) == 10
+        assert isinstance(self.list_jury[0], JuryChair)
+
+        for jury in self.list_jury[1:]:
+            assert not isinstance(jury, JuryChair)
+            assert isinstance(jury, Jury)
