@@ -19,8 +19,33 @@ class JuryDao(Dao[Jury]):
         :param jury: à créer sous forme d'entité Jury en BD
         :return: l'id de l'entité insérée en BD (0 si la création a échoué)
         """
-        with Dao.connection.cursor() as cursor:
-            return cursor.lastrowid
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                        INSERT INTO person(pe_first_name, pe_last_name)
+                        VALUES (%s, %s);
+                    """
+                cursor.execute(sql, (jury.first_name, jury.last_name))
+                id_person = cursor.lastrowid
+
+                if isinstance(jury, JuryChair):
+                    sql = """
+                            INSERT INTO jury(ju_id_person, ju_is_chairman)
+                            VALUES (%s, 1);
+                        """
+                else:
+                    sql = """
+                            INSERT INTO jury(ju_id_person, ju_is_chairman)
+                            VALUES (%s, 0);
+                        """
+                cursor.execute(sql, (id_person,))
+
+                return cursor.lastrowid
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return -1
 
     @staticmethod
     def jury_from_db(record: dict[str, Any]) -> Jury | None:
