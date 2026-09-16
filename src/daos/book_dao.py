@@ -12,7 +12,6 @@ from typing import Optional, Any
 
 from models.author import Author
 from models.editor import Editor
-from models.jury import Jury
 
 
 @dataclass
@@ -43,7 +42,7 @@ class BookDao(Dao[Book]):
                               editor,
                               record["bo_selected_to_turn"]
                               )
-            book.id = record["bo_id_book"]
+            book._id = record["bo_id_book"]
             return book
 
         return None
