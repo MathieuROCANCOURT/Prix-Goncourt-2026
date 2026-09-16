@@ -6,9 +6,10 @@ Classe JuryChair
 
 from dataclasses import dataclass, field
 from typing import Optional
-from .person import Person
+from .jury import Jury
 
 
 @dataclass
-class JuryChair(Person):
-    id: Optional[int] = field(default=None, init=False)
+class JuryChair(Jury):
+    def __init__(self):
+        super().__init__()
