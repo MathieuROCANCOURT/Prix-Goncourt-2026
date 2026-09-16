@@ -46,8 +46,21 @@ class EditorDao(Dao[Editor]):
         :param editor: éditeur déjà mis à jour en mémoire
         :return: True si la mise à jour a pu être réalisée
         """
-        with Dao.connection.cursor() as cursor:
-            return cursor.rowcount > 0
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                        UPDATE editor
+                        SET ed_name = %s
+                        WHERE ed_id_editor = %s;
+                    """
+                cursor.execute(sql, (editor.name, editor.id))
+
+                return cursor.rowcount > 0
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return True
 
     def delete(self, editor: Editor) -> bool:
         """Supprime en BD l'entité Editor correspondant à editor
