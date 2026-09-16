@@ -8,6 +8,8 @@ from daos.dao import Dao
 from dataclasses import dataclass
 from typing import Optional, Any
 
+from models.jury_chair import JuryChair
+
 
 @dataclass
 class JuryDao(Dao[Jury]):
@@ -24,9 +26,13 @@ class JuryDao(Dao[Jury]):
     def jury_from_db(record: dict[str, Any]) -> Jury | None:
         jury: Optional[Jury]
 
-        jury = Jury(record["pe_first_name"],
-                    record["pe_last_name"])
-        jury.id = record["jury.ju_id_jury"]
+        if record["ju_is_chairman"] == 1:
+            jury = JuryChair(record["pe_first_name"],
+                             record["pe_last_name"])
+        else:
+            jury = Jury(record["pe_first_name"],
+                        record["pe_last_name"])
+        jury.id = record["ju_id_jury"]
         jury.voted_id_book = record["bo_id_book"]
 
         return jury
