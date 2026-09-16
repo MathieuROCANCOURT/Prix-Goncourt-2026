@@ -6,7 +6,7 @@ Classe Dao[Editor]
 from models.editor import Editor
 from daos.dao import Dao
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 
 @dataclass
@@ -23,10 +23,22 @@ class EditorDao(Dao[Editor]):
     def read(self, id_editor: int) -> Optional[Editor]:
         """Renvoit l'éditeur correspondant à l'entité dont l'id est id_editor
            (ou None s'il n'a pu être trouvé)"""
-        editor: Optional[Editor]
+        editor: Optional[Editor] = None
 
-        with Dao.connection.cursor():
-            return None
+        with Dao.connection.cursor() as cursor:
+            sql = """
+                    SELECT * FROM editor
+                    WHERE ed_id_editor = %s;
+                """
+
+            cursor.execute(sql, (id_editor,))
+            record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
+
+        if isinstance(record, dict):
+            editor = Editor(record["ed_name"])
+            editor.id = record["ed_id_editor"]
+
+        return editor
 
     def update(self, editor: Editor) -> bool:
         """Met à jour en BD l'entité Editor correspondant à editor, pour y correspondre
