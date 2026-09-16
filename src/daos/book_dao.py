@@ -117,6 +117,7 @@ class BookDao(Dao[Book]):
                                      book.publish_date,
                                      book.nb_pages,
                                      book.price,
+                                     book.selected_to_nb_turn,
                                      book.editor.id,
                                      book.author.id,
                                      book.get_id))
