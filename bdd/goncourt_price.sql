@@ -21,8 +21,8 @@ USE goncourt_price;
 
 -- --------------------------------------------------------
 
-DROP TABLE IF EXISTS `book`;
 DROP TABLE IF EXISTS `jury`;
+DROP TABLE IF EXISTS `book`;
 DROP TABLE IF EXISTS `author`;
 DROP TABLE IF EXISTS `person`;
 DROP TABLE IF EXISTS `editor`;
