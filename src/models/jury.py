@@ -5,13 +5,16 @@ Classe Jury
 """
 
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from daos import book_dao
 from daos import jury_dao
-from .book import Book
-from .list_jury import ListJury
 from .person import Person
+
+# pour éviter une circularité des imports à l'exécution,
+# les classes Jury et Book important la classe ListJury
+if TYPE_CHECKING:
+    from .book import Book
 
 
 @dataclass
@@ -19,13 +22,21 @@ class Jury(Person):
     id: Optional[int] = field(default=None, init=False)
     voted_id_book: Optional[int] = field(default=None, init=False)
 
+    @staticmethod
+    def get_all_book_id_selected(list_book):
+        list_id_book = []
+        for book in list_book:
+            list_id_book.append(str(book.get_id))
+
+        return list_id_book
+
     def vote(self, list_book):
         vote_confirm: bool = False
 
         while not vote_confirm:
             id_book_vote: str = input("Pour quelle livre voulez-vous voter (en saisissant l'id) ?")
 
-            while id_book_vote not in ListJury.get_all_book_id_selected(list_book):
+            while id_book_vote not in self.get_all_book_id_selected(list_book):
                 id_book_vote = input("Vous n'avez pas saisie de choix parmi la liste des livre.\nVeuillez réessayer.")
 
             book_vote: Book | None = book_dao.BookDao().read(int(id_book_vote))

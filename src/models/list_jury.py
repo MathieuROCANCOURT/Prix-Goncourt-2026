@@ -9,6 +9,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 from dataclasses import dataclass, field
 
+from daos import book_dao
 from .jury_chair import JuryChair
 
 # pour éviter une circularité des imports à l'exécution,
@@ -39,14 +40,6 @@ class ListJury:
         print("[id]: Livre")
         for book in self.list_book_selected:
             print(f"[{book.get_id}]: {book}")
-
-    @staticmethod
-    def get_all_book_id_selected(list_book):
-        list_id_book = []
-        for book in list_book:
-            list_id_book.append(str(book.get_id))
-
-        return list_id_book
 
     def run_votes(self):
         for jury in self.list_jury:
