@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `book` (
   `bo_main_people` TEXT,
   `bo_publication_date` DATE NOT NULL,
   `bo_nb_pages` SMALLINT NOT NULL,
-  `bo_editor_price` DECIMAL(3,2) NOT NULL,
+  `bo_editor_price` DECIMAL(5,2) NOT NULL,
   `bo_selected_to_turn` SMALLINT NOT NULL DEFAULT 1,
   `bo_id_editor` INT NOT NULL,
   `bo_id_author` INT NOT NULL,
