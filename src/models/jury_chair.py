@@ -16,9 +16,7 @@ class JuryChair(Jury):
     def vote_counts_twice(is_draw: bool) -> int:
         return 2
 
-    def end_vote(self):
-        list_id_book = []
-        list_id_book_next_turn = []
+    def end_vote(self, list_book, nb_actual_turn):
         result = jury_dao.JuryDao().count_vote()
         print("Voici les résultats du vote:")
 
