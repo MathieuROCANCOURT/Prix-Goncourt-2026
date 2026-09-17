@@ -7,6 +7,7 @@ Classe JuryChair
 from dataclasses import dataclass
 
 from daos import jury_dao, book_dao
+from .book import Book
 from .jury import Jury
 
 
@@ -20,25 +21,34 @@ class JuryChair(Jury):
         result = jury_dao.JuryDao().count_vote()
         print("Voici les résultats du vote:")
 
-        list_id_book = self.display_result(result, list_id_book)
+        list_book, list_id_book = self.display_result(result, list_book, nb_actual_turn)
 
-        if len(result) > 4:
-            for _ in range(len(result) // 2):
-                list_id_book_next_turn.append(self.check_input_id(list_id_book))
-        else:
-            max_nb_vote = result[0]["count_vote"]
+        if len(list_id_book) > 4:
+            list_book_next_turn = []
 
-            if max_nb_vote == result[-1]["count_vote"]:
-                input("Est-ce que le président du jury veut utiliser son double voix ?[Y/n]")
-                list_id_book_next_turn.append(self.voted_id_book)
+            for _ in range(len(result) // (2 * nb_actual_turn)):
+                list_book_next_turn.append(self.check_input_id(list_id_book))
+            return list_book_next_turn
+
+        return self.last_selection(result, list_book)
+
+    def last_selection(self, result, list_book):
+        list_book_next_turn = []
+        max_nb_vote = result[0]["count_vote"]
+
+        if max_nb_vote == result[-1]["count_vote"]:
+            response = input("Est-ce que le président du jury veut utiliser son double voix ?[Y/n]")
+            if response == "" or response.lower() == "y":
+                list_book_next_turn.append(self.voted_id_book)
             else:
-                for id_book, nb_vote in result:
-                    if max_nb_vote == nb_vote:
-                        list_id_book_next_turn.append(id_book)
-                    else:
-                        break
-
-        return list_id_book_next_turn
+                return list_book
+        else:
+            for id_book, nb_vote in result:
+                if max_nb_vote == nb_vote:
+                    list_book_next_turn.append(book_dao.BookDao().read(id_book))
+                else:
+                    break
+        return list_book_next_turn
 
     @staticmethod
     def display_result(result, list_id_book):
