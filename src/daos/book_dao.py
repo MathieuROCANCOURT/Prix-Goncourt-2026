@@ -44,6 +44,7 @@ class BookDao(Dao[Book]):
                               record["bo_selected_to_turn"]
                               )
             book._id = record["bo_id_book"]
+            book.list_main_people = record["bo_main_people"]
             return book
 
         return None
