@@ -51,13 +51,18 @@ class JuryChair(Jury):
         return list_book_next_turn
 
     @staticmethod
-    def display_result(result, list_id_book):
+    def display_result(result, list_book, actual_turn):
+        list_id_book = []
         for row in result:
             id_book = row["bo_id_book"]
-            list_id_book.append(id_book)
-            print(f"[{id_book}] {book_dao.BookDao().read(id_book)}: {row["count_vote"]} voix.")
+            book: Book | None = book_dao.BookDao().read(id_book)
 
-        return list_id_book
+            if book is not None and book.selected_to_nb_turn == actual_turn:
+                list_book.append(book)
+                list_id_book.append(book.get_id)
+                print(f"[{book.get_id}] {book}: {row["count_vote"]} voix.")
+
+        return list_book, list_id_book
 
     @staticmethod
     def check_input_id(list_id_book) -> int:
