@@ -24,6 +24,8 @@ class ListJury:
     list_jury: list[Jury]
     list_book_selected: list[Book] = field(default_factory=list, init=True)
 
+    NB_TURN: int = 1
+
     def jury_chair(self) -> JuryChair | None:
         for jury in self.list_jury:
             if isinstance(jury, JuryChair):
