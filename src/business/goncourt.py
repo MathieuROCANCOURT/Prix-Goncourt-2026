@@ -50,6 +50,4 @@ class Goncourt:
 
     def init_app(self) -> None:
         list_jury = ListJury(self.list_jury, self.list_book)
-        assert list_jury.index_jury_chair() == 0
-
-        list_jury.display_all_books()
+        list_jury.run_votes()
