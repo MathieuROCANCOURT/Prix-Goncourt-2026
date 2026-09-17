@@ -24,11 +24,14 @@ class JuryChair(Jury):
         list_book, list_id_book = self.display_result(result, list_book, nb_actual_turn)
 
         if len(list_id_book) > 4:
-            list_book_next_turn = []
+            list_book.clear()
+            list_book_id_next_turn = []
 
             for _ in range(len(result) // (2 * nb_actual_turn)):
-                list_book_next_turn.append(self.check_input_id(list_id_book))
-            return list_book_next_turn
+                book, id_selected = self.check_input_id(list_id_book, list_book_id_next_turn)
+                list_book.append(book)
+                list_book_id_next_turn.append(id_selected)
+            return list_book
 
         return self.last_selection(result, list_book)
 
