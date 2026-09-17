@@ -47,26 +47,26 @@ class ListJury:
         while len(self.list_book_selected) != 1:
             for jury in self.list_jury:
                 print(f"Bonjour {jury.first_name} {jury.last_name}.\n"
-                      f"Voici la liste des courses en liste")
+                      f"Voici la liste des livres en liste")
                 self.display_all_books()
 
                 jury.vote(self.list_book_selected)
 
             jury_chairman: JuryChair | None = self.jury_chair()
 
-            list_id_book_next_turn = []
             if jury_chairman is not None:
-                list_id_book_next_turn = jury_chairman.end_vote()
+                self.list_book_selected = jury_chairman.end_vote(self.list_book_selected, self.NB_TURN)
 
-            self.end_turn(list_id_book_next_turn)
+            self.end_turn()
 
-    def end_turn(self, list_id_book: list[int]):
-        self.list_book_selected = []
+    def end_turn(self):
+        self.NB_TURN += 1
+        print(f"==================================\n"
+              f"Voici les livres sélectionner au tour {self.NB_TURN}\n"
+              f"===================================")
 
-        for id_book in list_id_book:
-            book: Book | None = book_dao.BookDao().read(id_book)
+        for book in self.list_book_selected:
             if book is not None:
-                self.list_book_selected.append(book)
-                book.selected_to_nb_turn += 1
+                book.selected_to_nb_turn = self.NB_TURN
                 print(book)
                 book_dao.BookDao().update(book)
