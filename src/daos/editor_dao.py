@@ -83,4 +83,17 @@ class EditorDao(Dao[Editor]):
         :param editor: éditeur dont l'entité Editor correspondante est à supprimer
         :return: True si la suppression a pu être réalisée
         """
-        pass  # Don't necessary to delete an editor
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                    DELETE FROM editor
+                    WHERE ed_id_editor = %s;
+                    """
+                cursor.execute(sql, (editor.id,))
+
+                return True
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return False
