@@ -65,12 +65,13 @@ class JuryDao(Dao[Jury]):
     def read(self, id_jury: int) -> Optional[Jury]:
         """Renvoit le jury correspondant à l'entité dont l'id est ju_id_jury
            (ou None s'il n'a pu être trouvé)"""
-        jury: Optional[Jury]
+        jury: Optional[Jury] = None
 
         with Dao.connection.cursor() as cursor:
             sql = """
                 SELECT * FROM jury
-                WHERE id_jury = %s;
+                JOIN person ON person.pe_id_person = jury.ju_id_person
+                WHERE ju_id_jury = %s;
                 """
             cursor.execute(sql, (id_jury,))
             record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
