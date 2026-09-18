@@ -35,9 +35,13 @@ class Goncourt:
 
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour le prix Goncourt."""
+        author = Author("Test", "Coucou")
+        editor = Editor("Roger Ulula")
+        book = Book("test", "1234567890123", "Zut!", datetime.date(2025, 6, 12), 324, 130.25, author, editor)
+        jury = Jury("Sam", "Bonbon")
+        jury_chair = JuryChair("Albator", "Love")
 
         # Test create, read and delete Author in Database
-        author = Author("Test", "Coucou")
         author.id = author_dao.AuthorDao().create(author)
 
         assert author == author_dao.AuthorDao().read(author.id)
@@ -46,7 +50,6 @@ class Goncourt:
         assert author_dao.AuthorDao().read(author.id) is None
 
         # Test create, read and delete Author in Database
-        editor = Editor("Roger Ulula")
         editor.id = editor_dao.EditorDao().create(editor)
 
         assert editor == editor_dao.EditorDao().read(editor.id)
@@ -54,7 +57,6 @@ class Goncourt:
         editor_dao.EditorDao().delete(editor)
         assert editor_dao.EditorDao().read(editor.id) is None
 
-        book = Book("test", "1234567890123", "Zut!", datetime.date(2025, 6, 12), 324, 130.25, author, editor)
         book._id = book_dao.BookDao().create(book)
 
         assert book == book_dao.BookDao().read(book.get_id)
@@ -66,6 +68,20 @@ class Goncourt:
         assert book_dao.BookDao().read(book.get_id) is None
         assert author_dao.AuthorDao().read(book.author.id) is None
         assert editor_dao.EditorDao().read(book.editor.id) is None
+
+        jury.id = jury_dao.JuryDao().create(jury)
+        jury_chair.id = jury_dao.JuryDao().create(jury_chair)
+
+        assert jury == jury_dao.JuryDao().read(jury.id)
+        assert jury_chair == jury_dao.JuryDao().read(jury_chair.id)
+        assert isinstance(jury_dao.JuryDao().read(jury.id), Jury)
+        assert isinstance(jury_dao.JuryDao().read(jury_chair.id), JuryChair)
+
+        jury_dao.JuryDao().delete(jury)
+        jury_dao.JuryDao().delete(jury_chair)
+
+        assert jury_dao.JuryDao().read(jury.id) is None
+        assert jury_dao.JuryDao().read(jury_chair.id) is None
 
         book_dao.BookDao().reset_book_to_first_turn()
         self.read_all_book_from_dao()
