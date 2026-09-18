@@ -34,6 +34,8 @@ class Goncourt:
 
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour le prix Goncourt."""
+
+        # Test create and delete Author in Database
         author = Author("Test", "Coucou")
 
         author.id = author_dao.AuthorDao().create(author)
