@@ -4,8 +4,6 @@
 Classe Dao[Book]
 """
 from daos import editor_dao, author_dao
-from daos.author_dao import AuthorDao
-from daos.editor_dao import EditorDao
 from models.book import Book
 from daos.dao import Dao
 from dataclasses import dataclass
@@ -192,4 +190,20 @@ class BookDao(Dao[Book]):
         return False
 
     def delete(self, book: Book) -> bool:
-        pass  # No necessary to delete a book.
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                    DELETE FROM book
+                    WHERE bo_id_book = %s;
+                    """
+                cursor.execute(sql, (book.get_id,))
+
+                author_dao.AuthorDao().delete(book.author)
+                editor_dao.EditorDao().delete(book.editor)
+
+                return True
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return False
