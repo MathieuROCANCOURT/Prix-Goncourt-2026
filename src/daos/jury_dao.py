@@ -193,4 +193,18 @@ class JuryDao(Dao[Jury]):
         :param jury: jury dont l'entité Jury correspondante est à supprimer
         :return: True si la suppression a pu être réalisée
         """
-        pass  # Don't necessary to delete a jury.
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                    DELETE jury, person FROM person
+                    JOIN jury ON jury.ju_id_person = person.pe_id_person
+                    WHERE jury.ju_id_jury = %s;
+                    """
+                cursor.execute(sql, (jury.id,))
+
+                return True
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return False
