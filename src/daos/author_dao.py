@@ -19,20 +19,25 @@ class AuthorDao(Dao[Author]):
         """
         try:
             with Dao.connection.cursor() as cursor:
+                sql_increment = "ALTER TABLE person AUTO_INCREMENT = 1;"
+                cursor.execute(sql_increment)
+
                 sql = """
                     INSERT INTO person(pe_first_name, pe_last_name)
                     VALUES (%s, %s);
                     """
                 cursor.execute(sql, (author.first_name, author.last_name))
-                record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
+                id_person = cursor.lastrowid
 
-                if isinstance(record, dict):
-                    sql = """
-                        INSERT INTO author(au_biography, au_id_person)
-                        VALUES (%s, %s);
-                        """
-                    cursor.execute(sql, (author.biography, record["pe_id_person"]))
-                    return cursor.lastrowid
+                sql_increment = "ALTER TABLE author AUTO_INCREMENT = 1;"
+                cursor.execute(sql_increment)
+
+                sql = """
+                    INSERT INTO author(au_biography, au_id_person)
+                    VALUES (%s, %s);
+                    """
+                cursor.execute(sql, (author.biography, id_person))
+                return cursor.lastrowid
 
         except Exception as e:
             print(f"Exception : {e}")
