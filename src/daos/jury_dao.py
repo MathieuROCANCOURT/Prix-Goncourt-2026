@@ -166,7 +166,7 @@ class JuryDao(Dao[Jury]):
         except Exception as e:
             print(f"Exception : {e}")
 
-        return True
+        return False
 
     @staticmethod
     def count_vote():
