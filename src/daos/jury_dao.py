@@ -185,7 +185,7 @@ class JuryDao(Dao[Jury]):
         except Exception as e:
             print(f"Exception : {e}")
 
-        return True
+        return []
 
     def delete(self, jury: Jury) -> bool:
         """Supprime en BD l'entité Jury correspondant à jury
