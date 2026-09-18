@@ -78,7 +78,7 @@ class AuthorDao(Dao[Author]):
         except Exception as e:
             print(f"Exception : {e}")
 
-        return True
+        return False
 
     def delete(self, author: Author) -> bool:
         """Supprime en BD l'entité author correspondant à author
