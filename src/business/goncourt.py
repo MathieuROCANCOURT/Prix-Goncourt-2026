@@ -33,6 +33,7 @@ class Goncourt:
 
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour le prix Goncourt."""
+        book_dao.BookDao().reset_book_to_first_turn()
         self.read_all_book_from_dao()
 
         assert len(self.list_book) == 16
