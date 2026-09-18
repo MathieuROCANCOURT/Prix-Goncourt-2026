@@ -135,5 +135,26 @@ class BookDao(Dao[Book]):
 
         return True
 
+    @staticmethod
+    def reset_book_to_first_turn():
+        """Met à jour en BD l'entité Book pour remettre les books sélectionnées à 1.
+
+        :return: True si la mise à jour a pu être réalisée
+        """
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                        UPDATE book
+                        SET bo_selected_to_turn=1;
+                    """
+                cursor.execute(sql)
+
+                return cursor.rowcount > 0
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return False
+
     def delete(self, book: Book) -> bool:
         pass  # No necessary to delete a book.
