@@ -46,6 +46,14 @@ class Goncourt:
 
         assert author_dao.AuthorDao().read(author.id) is None
 
+        editor = Editor("Roger Ulula")
+        editor.id = editor_dao.EditorDao().create(editor)
+
+        assert editor == editor_dao.EditorDao().read(editor.id)
+
+        editor_dao.EditorDao().delete(editor)
+        assert editor_dao.EditorDao().read(editor.id) is None
+
         book_dao.BookDao().reset_book_to_first_turn()
         self.read_all_book_from_dao()
 
