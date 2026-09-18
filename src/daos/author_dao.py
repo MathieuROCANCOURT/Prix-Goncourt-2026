@@ -17,8 +17,27 @@ class AuthorDao(Dao[Author]):
         :param author: à créer sous forme d'entité Author en BD
         :return: l'id de l'entité insérée en BD (0 si la création a échoué)
         """
-        with Dao.connection.cursor() as cursor:
-            return cursor.lastrowid > 0
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                    INSERT INTO person(pe_first_name, pe_last_name)
+                    VALUES (%s, %s);
+                    """
+                cursor.execute(sql, (author.first_name, author.last_name))
+                record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
+
+                if isinstance(record, dict):
+                    sql = """
+                        INSERT INTO author(au_biography, au_id_person)
+                        VALUES (%s, %s);
+                        """
+                    cursor.execute(sql, (author.biography, record["pe_id_person"]))
+                    return cursor.lastrowid
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return 0
 
     @staticmethod
     def read_author_from_db(record: dict[str, Any]) -> Author | None:
@@ -30,7 +49,6 @@ class AuthorDao(Dao[Author]):
         author.biography = record["au_biography"]
 
         return author
-
 
     def read(self, id_author: int) -> Optional[Author]:
         """Renvoit l'auteur correspondant à l'entité dont l'id est au_id_author
@@ -49,7 +67,6 @@ class AuthorDao(Dao[Author]):
             return self.read_author_from_db(record)
 
         return None
-
 
     def update(self, author: Author) -> bool:
         """Met à jour en BD l'entité Author correspondant à author, pour y correspondre
