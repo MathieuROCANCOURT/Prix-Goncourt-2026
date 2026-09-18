@@ -15,4 +15,4 @@ class Author(Person):
     biography: Optional[str] = field(default=None, init=False)
 
     def __str__(self) -> str:
-        return f"Biographie: {super().__str__()}"
+        return super().__str__()
