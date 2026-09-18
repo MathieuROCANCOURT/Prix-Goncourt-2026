@@ -3,7 +3,7 @@
 """
 Classe School
 """
-
+import datetime
 from dataclasses import dataclass, field
 
 from daos import book_dao, jury_dao, author_dao, editor_dao
@@ -53,6 +53,19 @@ class Goncourt:
 
         editor_dao.EditorDao().delete(editor)
         assert editor_dao.EditorDao().read(editor.id) is None
+
+        book = Book("test", "1234567890123", "Zut!", datetime.date(2025, 6, 12), 324, 130.25, author, editor)
+        book._id = book_dao.BookDao().create(book)
+
+        assert book == book_dao.BookDao().read(book.get_id)
+        assert book.author == author_dao.AuthorDao().read(book.author.id)
+        assert book.editor == editor_dao.EditorDao().read(book.editor.id)
+
+        book_dao.BookDao().delete(book)
+
+        assert book_dao.BookDao().read(book.get_id) is None
+        assert author_dao.AuthorDao().read(book.author.id) is None
+        assert editor_dao.EditorDao().read(book.editor.id) is None
 
         book_dao.BookDao().reset_book_to_first_turn()
         self.read_all_book_from_dao()
