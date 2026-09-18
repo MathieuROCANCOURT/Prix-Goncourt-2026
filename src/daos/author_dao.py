@@ -111,9 +111,9 @@ class AuthorDao(Dao[Author]):
         try:
             with Dao.connection.cursor() as cursor:
                 sql = """
-                    DELETE author, person FROM author
+                    DELETE author, person FROM person
                     JOIN author ON author.au_id_person = person.pe_id_person
-                    WHERE author.au_id_person = %s;
+                    WHERE author.au_id_author = %s;
                     """
                 cursor.execute(sql, (author.id,))
 
