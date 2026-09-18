@@ -6,7 +6,8 @@ Classe School
 
 from dataclasses import dataclass, field
 
-from daos import book_dao, jury_dao
+from daos import book_dao, jury_dao, author_dao
+from models.author import Author
 from models.book import Book
 from models.jury import Jury
 from models.jury_chair import JuryChair
@@ -33,6 +34,16 @@ class Goncourt:
 
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour le prix Goncourt."""
+        author = Author("Test", "Coucou")
+
+        author.id = author_dao.AuthorDao().create(author)
+
+        assert author == author_dao.AuthorDao().read(author.id)
+
+        author_dao.AuthorDao().delete(author)
+
+        assert author_dao.AuthorDao().read(author.id) is None
+
         book_dao.BookDao().reset_book_to_first_turn()
         self.read_all_book_from_dao()
 
