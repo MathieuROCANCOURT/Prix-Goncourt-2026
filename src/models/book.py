@@ -28,7 +28,7 @@ class Book:
     price: float
     author: Author
     editor: Editor
-    list_main_people: str = field(default_factory=str, init=False)
+    list_main_people: str | None = field(default=None, init=False)
     selected_to_nb_turn: int = 1
 
     @property
