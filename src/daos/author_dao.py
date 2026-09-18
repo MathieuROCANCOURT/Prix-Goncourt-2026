@@ -103,4 +103,18 @@ class AuthorDao(Dao[Author]):
         :param author: livre dont l'entité Author correspondante est à supprimer
         :return: True si la suppression a pu être réalisée
         """
-        pass  # Don't necessary to delete an author.
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql = """
+                    DELETE author, person FROM author
+                    JOIN author ON author.au_id_person = person.pe_id_person
+                    WHERE author.au_id_person = %s;
+                    """
+                cursor.execute(sql, (author.id,))
+
+                return True
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return False
