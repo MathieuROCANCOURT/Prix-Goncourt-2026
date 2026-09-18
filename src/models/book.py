@@ -6,6 +6,7 @@ Classe Book
 
 from __future__ import annotations
 
+from asyncio.windows_events import NULL
 from typing import Optional, TYPE_CHECKING
 from dataclasses import dataclass, field
 from datetime import date
