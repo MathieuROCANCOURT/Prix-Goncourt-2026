@@ -23,9 +23,44 @@ class BookDao(Dao[Book]):
         :param book: à créer sous forme d'entité Book en BD
         :return: l'id de l'entité insérée en BD (0 si la création a échoué)
         """
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql_increment = "ALTER TABLE book AUTO_INCREMENT = 1;"
+                cursor.execute(sql_increment)
 
-        with Dao.connection.cursor() as cursor:
-            return cursor.lastrowid
+                author_dao.AuthorDao().create(book.author)
+                editor_dao.EditorDao().create(book.editor)
+
+                sql = """
+                    INSERT INTO book(bo_title,
+                                     bo_isbn,
+                                     bo_resume,
+                                     bo_main_people,
+                                     bo_publication_date,
+                                     bo_nb_pages, 
+                                     bo_editor_price,
+                                     bo_selected_to_turn,
+                                     bo_id_editor,
+                                     bo_id_author)
+                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                    """
+                cursor.execute(sql, (book.title,
+                                     book.isbn,
+                                     book.resume,
+                                     book.list_main_people,
+                                     book.publish_date,
+                                     book.nb_pages,
+                                     book.price,
+                                     book.selected_to_nb_turn,
+                                     book.editor.id,
+                                     book.author.id))
+
+                return cursor.lastrowid
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return 0
 
     @staticmethod
     def book_from_db(record: dict[str, Any]) -> Book | None:
