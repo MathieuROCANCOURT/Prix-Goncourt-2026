@@ -60,7 +60,7 @@ class EditorDao(Dao[Editor]):
         except Exception as e:
             print(f"Exception : {e}")
 
-        return True
+        return False
 
     def delete(self, editor: Editor) -> bool:
         """Supprime en BD l'entité Editor correspondant à editor
