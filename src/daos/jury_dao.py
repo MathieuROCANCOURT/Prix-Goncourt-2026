@@ -91,10 +91,9 @@ class JuryDao(Dao[Jury]):
                     ju_is_chairman,
                     pe_first_name,
                     pe_last_name,
-                    bo_id_book
+                    ju_id_book
                 FROM jury
-                JOIN person ON person.pe_id_person = ju_id_person
-                LEFT JOIN book ON book.bo_id_book = jury.ju_id_book;
+                JOIN person ON person.pe_id_person = ju_id_person;
                 """
             cursor.execute(sql)
             records: tuple[dict[str, Any]] | tuple[tuple[Any], ...] | None = cursor.fetchall()
