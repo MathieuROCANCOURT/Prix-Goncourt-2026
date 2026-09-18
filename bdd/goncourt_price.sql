@@ -169,7 +169,7 @@ INSERT INTO person(pe_id_person, pe_first_name, pe_last_name) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `author` (
-  `au_id_author` int NOT NULL,
+  `au_id_author` int NOT NULL AUTO_INCREMENT,
   `au_biography` TEXT,
   `au_id_person` int NOT NULL,
   PRIMARY KEY (`au_id_author`),
