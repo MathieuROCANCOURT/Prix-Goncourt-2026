@@ -71,8 +71,9 @@ class JuryChair(Jury):
     def check_input_id(list_id_book, list_id_book_next_turn) -> tuple[Book | None, int]:
         id_book_selected = input("Saisir les id du livre qui passe au prochain tour.")
 
-        while (not id_book_selected.isdigit() or int(
-                id_book_selected) not in list_id_book) or int(id_book_selected) in list_id_book_next_turn:
+        while (not id_book_selected.isdigit()
+               or int(id_book_selected) not in list_id_book
+               or int(id_book_selected) in list_id_book_next_turn):
             id_book_selected = input("Saisie Incorrect\nSaisir les id du livre qui passe au prochain tour.")
 
         return book_dao.BookDao().read(int(id_book_selected)), int(id_book_selected)
