@@ -58,7 +58,7 @@ class JuryDao(Dao[Jury]):
             jury = Jury(record["pe_first_name"],
                         record["pe_last_name"])
         jury.id = record["ju_id_jury"]
-        jury.voted_id_book = record["bo_id_book"]
+        jury.voted_id_book = record["ju_id_book"]
 
         return jury
 
