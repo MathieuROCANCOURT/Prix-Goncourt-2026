@@ -133,7 +133,7 @@ class BookDao(Dao[Book]):
         except Exception as e:
             print(f"Exception : {e}")
 
-        return True
+        return False
 
     @staticmethod
     def reset_book_to_first_turn():
