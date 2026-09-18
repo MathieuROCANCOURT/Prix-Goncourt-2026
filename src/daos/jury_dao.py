@@ -76,9 +76,9 @@ class JuryDao(Dao[Jury]):
             record: dict[str, Any] | tuple[Any] | None = cursor.fetchone()
 
             if isinstance(record, dict):
-                book = self.jury_from_db(record)
+                jury = self.jury_from_db(record)
 
-            return book
+            return jury
 
     def read_all(self) -> list[Jury]:
         list_jury: list[Jury] = []
