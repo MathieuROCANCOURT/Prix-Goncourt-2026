@@ -17,8 +17,23 @@ class EditorDao(Dao[Editor]):
         :param editor: à créer sous forme d'entité Editor en BD
         :return: l'id de l'entité insérée en BD (0 si la création a échoué)
         """
-        with Dao.connection.cursor() as cursor:
-            return cursor.lastrowid
+        try:
+            with Dao.connection.cursor() as cursor:
+                sql_increment = "ALTER TABLE editor AUTO_INCREMENT = 1;"
+                cursor.execute(sql_increment)
+
+                sql = """
+                    INSERT INTO editor(ed_name)
+                    VALUES (%s);
+                    """
+                cursor.execute(sql, (editor.name,))
+
+                return cursor.lastrowid
+
+        except Exception as e:
+            print(f"Exception : {e}")
+
+        return 0
 
     def read(self, id_editor: int) -> Optional[Editor]:
         """Renvoit l'éditeur correspondant à l'entité dont l'id est id_editor
