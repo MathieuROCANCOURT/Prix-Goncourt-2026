@@ -6,9 +6,10 @@ Classe School
 
 from dataclasses import dataclass, field
 
-from daos import book_dao, jury_dao, author_dao
+from daos import book_dao, jury_dao, author_dao, editor_dao
 from models.author import Author
 from models.book import Book
+from models.editor import Editor
 from models.jury import Jury
 from models.jury_chair import JuryChair
 from models.list_jury import ListJury
@@ -35,17 +36,16 @@ class Goncourt:
     def init_static(self) -> None:
         """Initialisation d'un jeu de test pour le prix Goncourt."""
 
-        # Test create and delete Author in Database
+        # Test create, read and delete Author in Database
         author = Author("Test", "Coucou")
-
         author.id = author_dao.AuthorDao().create(author)
 
         assert author == author_dao.AuthorDao().read(author.id)
 
         author_dao.AuthorDao().delete(author)
-
         assert author_dao.AuthorDao().read(author.id) is None
 
+        # Test create, read and delete Author in Database
         editor = Editor("Roger Ulula")
         editor.id = editor_dao.EditorDao().create(editor)
 
